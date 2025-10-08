@@ -14,6 +14,7 @@ Course Repository for Udemy Course: [FreeRTOS on Raspberry PI PICO](https://www.
 + BlinkPriority: Use priority with tasks that create CPU workload
 + BlinkAssignment: Explore priority
 + I define on the main, led pad on 2
++ i add my full name and my student id on the main
 
 
 ## 5 Semaphore
