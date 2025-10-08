@@ -13,6 +13,7 @@ Course Repository for Udemy Course: [FreeRTOS on Raspberry PI PICO](https://www.
 + MultiBlink: Blink multiple LEDs using different task priority
 + BlinkPriority: Use priority with tasks that create CPU workload
 + BlinkAssignment: Explore priority
++ I define on the main, led pad on 2
 
 
 ## 5 Semaphore
