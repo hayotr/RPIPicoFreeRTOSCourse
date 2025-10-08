@@ -31,6 +31,8 @@ void runTimeStats(   ){
    // Get number of takss
    uxArraySize = uxTaskGetNumberOfTasks();
    printf("Number of tasks %d\n", uxArraySize);
+   printf("HAYOTＲａｎｉ\n");
+   printf("Ｆ１４１５８８０４\n");
 
    //Allocate a TaskStatus_t structure for each task.
    pxTaskStatusArray = (TaskStatus_t *)pvPortMalloc( uxArraySize * sizeof( TaskStatus_t ) );
