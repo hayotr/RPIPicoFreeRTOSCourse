@@ -19,11 +19,14 @@
 #define TASK_PRIORITY		( tskIDLE_PRIORITY + 1UL )
 
 //LED PAD to use
-#define LED_PAD					0
+#define LED_PAD					1
 #define LED1_PAD				2
 #define LED2_PAD				3
 #define LED3_PAD				4
 #define LED4_PAD				5
+
+//HAYOT Rani
+//F14158804
 
 
 
