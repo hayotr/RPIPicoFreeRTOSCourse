@@ -24,6 +24,9 @@
 #define LED2_PAD				3
 #define LED3_PAD				4
 #define LED4_PAD				5
+#define LED5_PAD				6
+#define LED6_PAD				7
+#define LED7_PAD				8
 
 //HAYOT Rani
 //F14158804
@@ -90,6 +93,9 @@ void mainTask(void *params){
 	BlinkAgent worker2(LED2_PAD);
 	BlinkAgent worker3(LED3_PAD);
 	BlinkAgent worker4(LED4_PAD);
+	BlinkAgent worker5(LED5_PAD);
+	BlinkAgent worker6(LED6_PAD);
+	BlinkAgent worker7(LED7_PAD);
 
 	printf("Main task started\n");
 
@@ -98,6 +104,9 @@ void mainTask(void *params){
 	worker2.start("Worker 2", TASK_PRIORITY + 1);
 	worker3.start("Worker 3", TASK_PRIORITY + 2);
 	worker4.start("Worker 4", TASK_PRIORITY + 3);
+	worker5.start("Worker 5", TASK_PRIORITY + 4);
+	worker6.start("Worker 6", TASK_PRIORITY + 5);
+	worker7.start("Worker 7", TASK_PRIORITY + 6);
 
 	while (true) { // Loop forever
 		runTimeStats();
