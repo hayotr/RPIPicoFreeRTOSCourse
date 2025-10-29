@@ -27,9 +27,8 @@
 #define LED5_PAD				6
 #define LED6_PAD				7
 #define LED7_PAD				8
+#define LED8_PAD				9
 
-//HAYOT Rani
-//F14158804
 
 
 
@@ -37,6 +36,8 @@ void runTimeStats(   ){
 	TaskStatus_t *pxTaskStatusArray;
 	volatile UBaseType_t uxArraySize, x;
 	unsigned long ulTotalRunTime;
+
+	
 
 
    // Get number of takss
@@ -74,6 +75,8 @@ void runTimeStats(   ){
    //Get heap allocation information
    HeapStats_t heapStats;
    vPortGetHeapStats(&heapStats);
+   printf("HAYOT Rani");
+   printf("F14158804");
    printf("HEAP avl: %d, blocks %d, alloc: %d, free: %d\n",
 		   heapStats.xAvailableHeapSpaceInBytes,
 		   heapStats.xNumberOfFreeBlocks,
@@ -96,6 +99,8 @@ void mainTask(void *params){
 	BlinkAgent worker5(LED5_PAD);
 	BlinkAgent worker6(LED6_PAD);
 	BlinkAgent worker7(LED7_PAD);
+	BlinkAgent worker8(LED8_PAD);
+	
 
 	printf("Main task started\n");
 
@@ -107,6 +112,8 @@ void mainTask(void *params){
 	worker5.start("Worker 5", TASK_PRIORITY + 4);
 	worker6.start("Worker 6", TASK_PRIORITY + 5);
 	worker7.start("Worker 7", TASK_PRIORITY + 6);
+	worker8.start("Worker 8", TASK_PRIORITY + 7);
+	
 
 	while (true) { // Loop forever
 		runTimeStats();
