@@ -18,21 +18,21 @@
 
 
 //Standard Task priority
-#define TASK_PRIORITY		( tskIDLE_PRIORITY + 1UL )
+#define TASK_PRIORITY       ( tskIDLE_PRIORITY + 1UL )
 
 //LED PAD to use
-#define LED_PAD				0
-#define LED1_PAD			2
-#define LED2_PAD			3
-#define LED3_PAD			4
-#define LED4_PAD			5
+#define LED_PAD             2
+#define LED1_PAD            3
+#define LED2_PAD            4
+#define LED3_PAD            5
+#define LED4_PAD            6
 
 
 
-void runTimeStats(   ){
-	TaskStatus_t *pxTaskStatusArray;
-	volatile UBaseType_t uxArraySize, x;
-	unsigned long ulTotalRunTime;
+void runTimeStats(  ){
+    TaskStatus_t *pxTaskStatusArray;
+    volatile UBaseType_t uxArraySize, x;
+    unsigned long ulTotalRunTime;
 
 
    // Get number of takss
@@ -43,39 +43,39 @@ void runTimeStats(   ){
    pxTaskStatusArray = (TaskStatus_t *)pvPortMalloc( uxArraySize * sizeof( TaskStatus_t ) );
 
    if( pxTaskStatusArray != NULL ){
-      // Generate raw status information about each task.
-      uxArraySize = uxTaskGetSystemState( pxTaskStatusArray,
-                                 uxArraySize,
-                                 &ulTotalRunTime );
+       // Generate raw status information about each task.
+       uxArraySize = uxTaskGetSystemState( pxTaskStatusArray,
+                                   uxArraySize,
+                                   &ulTotalRunTime );
 
-	 // Print stats
-	 for( x = 0; x < uxArraySize; x++ )
-	 {
-		 printf("Task: %d \t cPri:%d \t bPri:%d \t hw:%d \t%s\n",
-				pxTaskStatusArray[ x ].xTaskNumber ,
-				pxTaskStatusArray[ x ].uxCurrentPriority ,
-				pxTaskStatusArray[ x ].uxBasePriority ,
-				pxTaskStatusArray[ x ].usStackHighWaterMark ,
-				pxTaskStatusArray[ x ].pcTaskName
-				);
-	 }
+       // Print stats
+       for( x = 0; x < uxArraySize; x++ )
+       {
+           printf("Task: %d \t cPri:%d \t bPri:%d \t hw:%d \t%s\n",
+                   pxTaskStatusArray[ x ].xTaskNumber ,
+                   pxTaskStatusArray[ x ].uxCurrentPriority ,
+                   pxTaskStatusArray[ x ].uxBasePriority ,
+                   pxTaskStatusArray[ x ].usStackHighWaterMark ,
+                   pxTaskStatusArray[ x ].pcTaskName
+                   );
+       }
 
 
-      // Free array
-      vPortFree( pxTaskStatusArray );
+        // Free array
+        vPortFree( pxTaskStatusArray );
    } else {
-	   printf("Failed to allocate space for stats\n");
+       printf("Failed to allocate space for stats\n");
    }
 
    //Get heap allocation information
    HeapStats_t heapStats;
    vPortGetHeapStats(&heapStats);
    printf("HEAP avl: %d, blocks %d, alloc: %d, free: %d\n",
-		   heapStats.xAvailableHeapSpaceInBytes,
-		   heapStats.xNumberOfFreeBlocks,
-		   heapStats.xNumberOfSuccessfulAllocations,
-		   heapStats.xNumberOfSuccessfulFrees
-		   );
+           heapStats.xAvailableHeapSpaceInBytes,
+           heapStats.xNumberOfFreeBlocks,
+           heapStats.xNumberOfSuccessfulAllocations,
+           heapStats.xNumberOfSuccessfulFrees
+           );
 }
 
 
@@ -84,27 +84,46 @@ void runTimeStats(   ){
  * @param params - unused
  */
 void mainTask(void *params){
-	BlinkAgent blink(LED_PAD);
-	BlinkWorker worker1(LED1_PAD);
-	BlinkWorker worker2(LED2_PAD);
-	BlinkWorker worker3(LED3_PAD);
+    BlinkAgent blink(LED_PAD);
+    
+    // 1. Make four BlinkWorker instances 
+    BlinkWorker worker1(LED1_PAD);
+    BlinkWorker worker2(LED2_PAD);
+    BlinkWorker worker3(LED3_PAD);
+    BlinkWorker worker4(LED4_PAD); 
 
-	SemaphoreHandle_t sem = xSemaphoreCreateCounting(3, 2);
-	worker1.setSemaphore(sem);
-	worker2.setSemaphore(sem);
-	worker3.setSemaphore(sem);
+    // 2. Make a counting semaphore with a max count of 4 (uxMaxCount)
+    //    but only start with 2 (uxInitialCount)
+    SemaphoreHandle_t sem = xSemaphoreCreateCounting(4, 2);
+    
+    // 3. Assign the semaphore to each worker so they can use it
+    worker1.setSemaphore(sem);
+    worker2.setSemaphore(sem);
+    worker3.setSemaphore(sem);
+    worker4.setSemaphore(sem); 
+    
+    printf("Main task started\n");
 
-	printf("Main task started\n");
+    blink.start("Blink", TASK_PRIORITY);
+    
+    // 4. Running all four workers
+    worker1.start("Worker 1", TASK_PRIORITY);
+    worker2.start("Worker 2", TASK_PRIORITY);
+    worker3.start("Worker 3", TASK_PRIORITY);
+    worker4.start("Worker 4", TASK_PRIORITY); 
 
-	blink.start("Blink", TASK_PRIORITY);
-	worker1.start("Worker 1", TASK_PRIORITY);
-	worker2.start("Worker 2", TASK_PRIORITY);
-	worker3.start("Worker 3", TASK_PRIORITY);
+    while (true) { // Loop forever
+        
+        // Print identity information
+        printf("\n===================================\n");
+        printf("Name: Rani HAYOT\n");       
+        printf("Student ID: F14158804\n"); 
+        printf("===================================\n");
+        
 
-	while (true) { // Loop forever
-		runTimeStats();
-		vTaskDelay(3000);
-	}
+        runTimeStats();
+        vTaskDelay(3000);
+    }
 }
 
 
@@ -115,7 +134,7 @@ void mainTask(void *params){
  */
 void vLaunch( void) {
 
-	//Start blink task
+    //Start blink task
     TaskHandle_t task;
     xTaskCreate(mainTask, "MainThread", 500, NULL, TASK_PRIORITY, &task);
 
@@ -129,9 +148,10 @@ void vLaunch( void) {
  */
 int main( void )
 {
-	//Setup serial over USB and give a few seconds to settle before we start
+    //Setup serial over USB and give a few seconds to settle before we start
     stdio_init_all();
     sleep_ms(2000);
+
     printf("GO\n");
 
     //Start tasks and scheduler
