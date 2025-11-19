@@ -124,7 +124,7 @@ int main( void )
 {
 	//Setup serial over USB and give a few seconds to settle before we start
     stdio_init_all();
-    sleep_ms(2000);
+    sleep_ms(10000);
     printf("GO\n");
 
     //Start tasks and scheduler
