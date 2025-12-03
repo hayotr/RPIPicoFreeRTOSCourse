@@ -19,8 +19,8 @@
 
 #define IO_AGENT_BAUD   9600
 
-#define IO_AGENT_RX_PAD 16
-#define IO_AGENT_TX_PAD 17
+#define IO_AGENT_RX_PAD 17
+#define IO_AGENT_TX_PAD 16
 
 #define IO_AGENT_LINE_LEN 80
 #define IO_MSG_WAIT 3000
